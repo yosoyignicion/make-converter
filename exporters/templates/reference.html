@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ design.name }} — Referencia .make</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg-deep: #050508;
+  --bg-frost: #0c0c14;
+  --bg-card: #0a0a12;
+  --border: rgba(255,255,255,0.06);
+  --text: #e8e8ed;
+  --text-muted: #8888a0;
+  --accent: #ff003c;
+  --accent-glow: rgba(255,0,60,0.15);
+  --green: #00e676;
+  --orange: #ff9100;
+  --radius: 16px;
+  --radius-sm: 8px;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg-deep);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.wrapper { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+
+/* Glass card */
+.glass {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(12px);
+}
+
+/* Hero */
+.hero {
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+  margin-bottom: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.hero-thumb {
+  width: 200px; height: 176px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.hero-info { flex: 1; min-width: 200px; }
+.hero-info h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+.hero-info h1 span { color: var(--accent); }
+.hero-info .meta {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-top: 8px;
+}
+.hero-info .meta dt { display: inline; font-weight: 600; color: var(--text); }
+.hero-info .meta dd { display: inline; }
+
+/* Stats bar */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 4px;
+}
+
+/* Section title */
+.section-title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin: 28px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Conversation */
+.msg {
+  display: flex;
+  gap: 12px;
+  padding: 16px 20px;
+  margin-bottom: 8px;
+  align-items: flex-start;
+}
+.msg-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.msg-body { flex: 1; min-width: 0; }
+.msg-header {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+.msg-role {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.msg-time {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+.msg-model {
+  font-size: 0.65rem;
+  background: var(--border);
+  padding: 1px 8px;
+  border-radius: 999px;
+  color: var(--text-muted);
+}
+.msg-text {
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.65;
+}
+.msg-text.empty { color: var(--text-muted); font-style: italic; }
+
+/* Role colors */
+.msg-user .msg-avatar { background: var(--accent); color: #fff; }
+.msg-user .msg-role { color: var(--accent); }
+.msg-user { border-left: 3px solid var(--accent); }
+
+.msg-assistant .msg-avatar { background: #2a2a3a; color: var(--text); }
+.msg-assistant .msg-role { color: var(--text); }
+.msg-assistant { border-left: 3px solid #3a3a4e; }
+
+.msg-tool .msg-avatar { background: #1a2a1a; color: var(--green); font-size: 0.6rem; }
+.msg-tool .msg-role { color: var(--green); }
+.msg-tool { border-left: 3px solid var(--green); }
+.msg-tool .msg-text { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.8rem; opacity: 0.8; }
+
+/* Images */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  padding: 4px;
+}
+.image-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.image-card img {
+  width: 100%;
+  display: block;
+  border-bottom: 1px solid var(--border);
+}
+.image-card .img-info {
+  padding: 8px 12px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.image-card .img-info span { display: block; }
+
+/* Download footer */
+.download-section {
+  margin-top: 28px;
+  padding: 20px 24px;
+  text-align: center;
+}
+.download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 24px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.download-btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 24px var(--accent-glow);
+}
+.download-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 32px 0 16px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .hero { flex-direction: column; align-items: stretch; }
+  .hero-thumb { width: 100%; height: auto; aspect-ratio: 400/353; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .msg { padding: 12px 14px; }
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Hero -->
+  <div class="hero glass">
+    {% if thumbnail_b64 %}
+    <img class="hero-thumb" src="data:image/png;base64,{{ thumbnail_b64 }}" alt="Thumbnail">
+    {% else %}
+    <div class="hero-thumb" style="display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.8rem;">Sin preview</div>
+    {% endif %}
+    <div class="hero-info">
+      <h1><span>Open</span> CenterSpace</h1>
+      <dl class="meta">
+        <dt>Archivo:</dt> <dd>{{ source_file }}</dd>
+        <dt>Exportado:</dt> <dd>{{ exported_at }}</dd>
+        <dt>Lienzo:</dt> <dd>{{ design.canvas_size.width }}×{{ design.canvas_size.height }}px</dd>
+        <dt>Fondo:</dt> <dd><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:{{ design.background_hex }};border:1px solid var(--border);vertical-align:middle;"></span> {{ design.background_hex }}</dd>
+        <dt>Nombre:</dt> <dd>{{ design.name }}</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats glass">
+    <div><div class="stat-value">{{ stats.total_messages }}</div><div class="stat-label">Mensajes</div></div>
+    <div><div class="stat-value">{{ stats.user_messages }}</div><div class="stat-label">Usuario</div></div>
+    <div><div class="stat-value">{{ stats.assistant_iterations }}</div><div class="stat-label">AI Iteraciones</div></div>
+    <div><div class="stat-value">{{ stats.tool_calls }}</div><div class="stat-label">Tool Calls</div></div>
+    <div><div class="stat-value">{{ stats.total_images }}</div><div class="stat-label">Assets</div></div>
+  </div>
+
+  <!-- Conversation -->
+  <h2 class="section-title">Conversación Figma AI</h2>
+  {% for msg in conversation %}
+  <div class="glass msg msg-{{ msg.role }}">
+    <div class="msg-avatar">
+      {% if msg.role == 'user' %}U{% elif msg.role == 'assistant' %}AI{% else %}T{% endif %}
+    </div>
+    <div class="msg-body">
+      <div class="msg-header">
+        <span class="msg-role">
+          {% if msg.role == 'user' %}Usuario{% elif msg.role == 'assistant' %}Asistente{% else %}Tool{% endif %}
+        </span>
+        <span class="msg-time">{{ msg.timestamp }}</span>
+        {% if msg.model %}<span class="msg-model">{{ msg.model }}</span>{% endif %}
+      </div>
+      <div class="msg-text{% if not msg.text %} empty{% endif %}">
+        {% if msg.text %}{{ msg.text }}{% else %}— sin contenido textual —{% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+  <!-- Images -->
+  {% if images %}
+  <h2 class="section-title">Assets del Diseño ({{ images|length }})</h2>
+  <div class="image-grid">
+    {% for img in images %}
+    <div class="image-card">
+      <img src="data:image/png;base64,{{ img.b64 }}" alt="{{ img.filename }}">
+      <div class="img-info">
+        <span>{{ img.filename }}</span>
+        <span>{{ (img.size / 1024)|round(1) }} KB</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Download canvas.fig -->
+  {% if canvas_fig_b64 %}
+  <div class="download-section glass">
+    <a class="download-btn" href="data:application/octet-stream;base64,{{ canvas_fig_b64 }}" download="{{ design.name }}.fig">
+      ⬇ Descargar {{ design.name }}.fig original
+    </a>
+    <div class="download-hint">Archivo Figma nativo — ábrelo en figma.com</div>
+  </div>
+  {% endif %}
+
+  <div class="footer">
+    Generado por make-converter (figma solution) &mdash; {{ exported_at[:10] }}
+  </div>
+</div>
+</body>
+</html>
